@@ -14,27 +14,27 @@ pipeline {
         }
         stage('Tag Image') {
             steps {
-                sh 'docker tag sample-web-app:latest Akshay1867/sample-web-app:latest'
+                sh 'docker tag sample-web-app:latest akshay1867/sample-web-app:latest'
             }
         }
         stage('Push Image to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker push Akshay1867/sample-web-app:latest'
+                    sh 'docker push akshay1867/sample-web-app:latest'
                 }
             }
         }
         stage('Pull Image from Docker Hub') {
             steps {
-                sh 'docker pull Akshay1867/sample-web-app:latest'
+                sh 'docker pull akshay1867/sample-web-app:latest'
             }
         }
         stage('Run Docker Container') {
             steps {
                 sh '''
                 docker rm -f sample-web-app || true
-                docker run -d -p 80:80 --name sample-web-app Akshay1867/sample-web-app:latest
+                docker run -d -p 80:80 --name sample-web-app akshay1867/sample-web-app:latest
                 '''
             }
         }
